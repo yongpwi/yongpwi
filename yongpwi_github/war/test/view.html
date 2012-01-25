@@ -1,0 +1,389 @@
+
+  CREATE OR REPLACE FORCE VIEW "DSHRAP"."HRM_EMP_V" ("PERSON_ID", "EMP_ID", "EMP_NM", "EMP_NM_ENG", "EMP_NM_CHA", "CTZ_NO", "CTZ_NO_SECR", "GENDER_TYPE", "BIRTH_TYPE", "BIRTH_YMD", "COM_ORG_ID", "ORG_CLASS", "COM_ORG_NM", "ORG_ID", "ORG_NM", "ORG_FULL_NM", "ORG_LINE", "MAIN_YN", "STATUS_TYPE", "COM_RELAT_TYPE", "RELAT_TYPE", "SALARY_TYPE", "EMP_TYPE", "GROUP_TYPE", "POS_TYPE", "SALARY_CLASS", "DUTY_TYPE", "OCC_TYPE", "TITLE_TYPE", "JOB_FULL_NM", "JOB_CLASS_ORDER", "NEXT_CLASS_YMD", "WORK_AREA", "ORG_RANK", "RETIRE_YMD", "EX_COM_ORG_ID", "EX_COM_ORG_NM", "WORK_ORG_ID", "POST_ORG_ID", "REAL_ORDER_YMD", "WORK_AREA2", "JOB_ID", "NATIVE_PLACE", "ORG_SEQ", "ORDER_REASON_TYPE", "AUTH_GROUP_TYPE", "ORG_TYPE", "REAL_WORK_ORG_ID", "AREA_CD", "ORG_SHORT_NM", "WORK_BASE_YMD", "POS_TERM", "JIKWI_INJUNG_CAREER", "FIRST_EMP_ID", "GROUP_ENTER_YMD", "FIRST_ENTER_YMD", "CUR_ENTER_YMD", "MOD_DATE", "PEOPLE_TYPE", "UNION_ENT_TF", "UNION_TYPE", "UNION_NOTE", "ORDER_TYPE", "ORDER_YMD", "PROB_END_YMD", "NATION_TYPE", "WORK_COM_ORG_ID", "ORI_COM_ORG_ID", "TNEE_END_YMD", "YOFF_GIJUN_YMD", "ENT_TYPE", "REQ_TYPE", "POSITION_ID", "POSITION_NM", "POSITION_GRADE", "PERSONAL_GRADE", "F_BENEFIT_GRADE", "ORDER_END_YMD") AS 
+  SELECT A.PERSON_ID PERSON_ID, -- 개인ID
+       A.EMP_ID EMP_ID, -- 사번
+       A.EMP_NM EMP_NM, -- 한글이름
+
+
+--   RTRIM(LTRIM(a.emp_nm_eng_first || ' ' || a.emp_nm_eng_last)) emp_nm_eng ,  -- 영문이름
+       INITCAP (LTRIM (A.EMP_NM_ENG_LAST || ' ' || A.EMP_NM_ENG_FIRST)) EMP_NM_ENG, -- 영문이름
+       A.EMP_NM_CHA EMP_NM_CHA, -- 한자이름
+       A.CTZ_NO CTZ_NO, -- 주민등록번호
+       SUBSTR (A.CTZ_NO, 1, 6) || '-' || SUBSTR (A.CTZ_NO, 7, 1) || '******' CTZ_NO_SECR, -- 주민등록번호(보안용)
+       A.GENDER_TYPE GENDER_TYPE, -- 남여구분
+       A.BIRTH_TYPE BIRTH_TYPE, -- 음양구분
+       A.BIRTH_YMD BIRTH_YMD, -- 생년월일
+       A.COM_ORG_ID COM_ORG_ID, -- 회사ID
+       A.ORG_CLASS ORG_CLASS,
+
+
+-- 회사구분
+       A.COM_ORG_NM COM_ORG_NM, -- 회사명
+       A.ORG_ID ORG_ID,
+
+
+-- 조직ID
+       A.ORG_NM ORG_NM, -- 조직명
+       A.ORG_FULL_NM ORG_FULL_NM, -- 조직전체명
+       A.ORG_LINE ORG_LINE,
+
+
+-- 조직Line
+       A.MAIN_YN MAIN_YN,
+
+
+-- 주부구분(겸직 체크)
+       A.STATUS_TYPE STATUS_TYPE, -- 재직상태
+       A.COM_RELAT_TYPE COM_RELAT_TYPE,
+
+
+-- 사원과 회사조직 관계유형(회사 겸직 체크)
+       A.RELAT_TYPE RELAT_TYPE,
+
+
+-- 사원과 조직 관계유형(조직장 또는 겸직 체크)
+       A.SALARY_TYPE SALARY_TYPE, -- 급여유형
+       A.EMP_TYPE EMP_TYPE,
+
+
+-- 사원유형
+       A.GROUP_TYPE GROUP_TYPE, -- 직군
+       A.POS_TYPE POS_TYPE, -- 직위
+       A.SALARY_CLASS SALARY_CLASS, -- 호봉
+       A.DUTY_TYPE DUTY_TYPE, -- 직책코드
+       A.OCC_TYPE OCC_TYPE,
+
+
+-- 직종코드(건설)
+       A.TITLE_TYPE TITLE_TYPE, -- 직급
+       A.JOB_FULL_NM JOB_FULL_NM,
+
+
+-- 직무전체명 (직군 직종 직무)
+       A.JOB_CLASS_ORDER JOB_CLASS_ORDER,
+
+
+-- 직위정렬키
+       A.NEXT_CLASS_YMD NEXT_CLASS_YMD,
+
+
+-- 차기승봉일
+       A.WORK_AREA WORK_AREA, -- 사업장
+       A.ORG_RANK ORG_RANK, -- 조직Rank
+       A.RETIRE_YMD RETIRE_YMD,
+
+
+-- 퇴직일
+       A.COM_ORG_ID EX_COM_ORG_ID, -- 서브회사ID
+       A.EX_COM_ORG_NM EX_COM_ORG_NM,
+
+
+-- 서브회사명
+       A.WORK_ORG_ID WORK_ORG_ID, -- 현근무지
+       A.POST_ORG_ID POST_ORG_ID, -- 부임지
+       A.REAL_ORDER_YMD REAL_ORDER_YMD, -- 실부임일
+       A.WORK_AREA2 WORK_AREA2, -- 사업장
+       A.JOB_ID JOB_ID, -- 직무ID
+       A.NATIVE_PLACE NATIVE_PLACE, -- 출신지역
+       A.ORG_SEQ ORG_SEQ,
+
+
+-- 조직순서
+       A.ORDER_REASON_TYPE ORDER_REASON_TYPE, -- 발령사유
+       A.AUTH_GROUP_TYPE AUTH_GROUP_TYPE, -- 직군그룹(권한)
+       A.ORG_TYPE ORG_TYPE,
+
+
+-- 조직유형 -- 실제근무지
+       A.REAL_WORK_ORG_ID REAL_WORK_ORG_ID, -- 지역(신청, 결제)
+       A.AREA_CD AREA_CD, -- 근무지역
+       A.ORG_SHORT_NM ORG_SHORT_NM, -- 조직약칭
+       A.WORK_BASE_YMD WORK_BASE_YMD -- 근속기준일
+       ,
+       SYS_SF_BETWEEN_YMD ( SYS_SF_ORG_YMD (A.PERSON_ID, A.ORG_ID, TO_CHAR (SYSDATE, 'YYYYMMDD')), TO_CHAR (SYSDATE, 'YYYYMMDD'), 'YY년MM월', 'Y' ) -- 직위근속일
+       ,
+       A.JIKWI_INJUNG_CAREER, -- 인정직위발령일
+       A.FIRST_EMP_ID, -- 두피스/두드림 사번
+       A.GROUP_ENTER_YMD, -- 그룹입사일
+       A.FIRST_ENTER_YMD, -- 최초입사일
+       A.CUR_ENTER_YMD, -- 회사입사일
+       A.MOD_DATE, -- 마지막 update
+       A.PEOPLE_TYPE, -- 민족
+       A.UNION_ENT_TF,
+       A.UNION_TYPE,
+       A.UNION_NOTE,
+       A.ORDER_TYPE, --발령구분
+       A.ORDER_YMD, --발령일자
+       A.PROB_END_YMD,
+       A.NATION_TYPE, --국가코드
+       A.WORK_COM_ORG_ID, --파견회사코드 (employee 만 존재)
+       NULL ORI_COM_ORG_ID, --원회사코드 (add_job 만존재)
+       A.TNEE_END_YMD, --실습만료일
+       A.YOFF_GIJUN_YMD, --연차기준일
+       A.ENT_TYPE, --입사구분
+       A.REQ_TYPE, --채용구분
+       a.POSITION_ID ,  
+       a.POSITION_NM ,
+       a.POSITION_GRADE ,
+       a.PERSONAL_GRADE  ,
+       a.F_BENEFIT_GRADE ,
+       a.ORDER_END_YMD   -- 발령종료일자   
+FROM   HRM_EMPLOYEE A;
+ 
+-------------------------------------------------------------------------
+ CREATE OR REPLACE FORCE VIEW "DICHRAP"."HRM_EMP_V" ("PERSON_ID", "EMP_ID", "EMP_NM", "EMP_NM_ENG", "EMP_NM_CHA", "CTZ_NO", "CTZ_NO_SECR", "GENDER_TYPE", "BIRTH_TYPE", "BIRTH_YMD", "COM_ORG_ID", "ORG_CLASS", "COM_ORG_NM", "ORG_ID", "ORG_NM", "ORG_FULL_NM", "ORG_LINE", "MAIN_YN", "STATUS_TYPE", "COM_RELAT_TYPE", "RELAT_TYPE", "SALARY_TYPE", "EMP_TYPE", "GROUP_TYPE", "POS_TYPE", "SALARY_CLASS", "DUTY_TYPE", "OCC_TYPE", "TITLE_TYPE", "JOB_FULL_NM", "JOB_CLASS_ORDER", "NEXT_CLASS_YMD", "WORK_AREA", "ORG_RANK", "RETIRE_YMD", "EX_COM_ORG_ID", "EX_COM_ORG_NM", "WORK_ORG_ID", "POST_ORG_ID", "REAL_ORDER_YMD", "WORK_AREA2", "JOB_ID", "NATIVE_PLACE", "ORG_SEQ", "ORDER_REASON_TYPE", "AUTH_GROUP_TYPE", "ORG_TYPE", "REAL_WORK_ORG_ID", "AREA_CD", "ORG_SHORT_NM", "WORK_BASE_YMD", "POS_TERM", "JIKWI_INJUNG_CAREER", "FIRST_EMP_ID", "GROUP_ENTER_YMD", "FIRST_ENTER_YMD", "CUR_ENTER_YMD", "MOD_DATE", "PEOPLE_TYPE", "UNION_ENT_TF", "UNION_TYPE", "UNION_NOTE", "ORDER_TYPE", "ORDER_YMD", "PROB_END_YMD", "NATION_TYPE", "WORK_COM_ORG_ID", "ORI_COM_ORG_ID", "TNEE_END_YMD", "REL_CITY", "ENT_TYPE", "REQ_TYPE", "POSITION_ID", "POSITION_NM", "POSITION_GRADE", "PERSONAL_GRADE", "F_BENEFIT_GRADE", "ORDER_END_YMD") AS 
+  SELECT a.person_id person_id, -- 개인ID
+       a.emp_id emp_id, -- 사번
+       a.emp_nm emp_nm, -- 한글이름
+
+
+--   RTRIM(LTRIM(a.emp_nm_eng_first || ' ' || a.emp_nm_eng_last)) emp_nm_eng ,  -- 영문이름
+       INITCAP (LTRIM (a.emp_nm_eng_last || ' ' || a.emp_nm_eng_first) ) emp_nm_eng, -- 영문이름
+       a.emp_nm_cha emp_nm_cha, -- 한자이름
+       a.ctz_no ctz_no, -- 주민등록번호
+       SUBSTR (a.ctz_no, 1, 6) || '-' || SUBSTR (a.ctz_no, 7, 1) || '******' ctz_no_secr, -- 주민등록번호(보안용)
+       a.gender_type gender_type, -- 남여구분
+       a.birth_type birth_type, -- 음양구분
+       a.birth_ymd birth_ymd, -- 생년월일
+       a.com_org_id com_org_id, -- 회사ID
+       a.org_class org_class,
+
+
+-- 회사구분
+       a.com_org_nm com_org_nm, -- 회사명
+       a.org_id org_id,
+
+
+-- 조직ID
+       a.org_nm org_nm, -- 조직명
+       a.org_full_nm org_full_nm, -- 조직전체명
+       a.org_line org_line,
+
+
+-- 조직Line
+       a.main_yn main_yn,
+
+
+-- 주부구분(겸직 체크)
+       a.status_type status_type, -- 재직상태
+       a.com_relat_type com_relat_type,
+
+
+-- 사원과 회사조직 관계유형(회사 겸직 체크)
+       a.relat_type relat_type,
+
+
+-- 사원과 조직 관계유형(조직장 또는 겸직 체크)
+       a.salary_type salary_type, -- 급여유형
+       a.emp_type emp_type,
+
+
+-- 사원유형
+       a.group_type group_type, -- 직군
+       a.pos_type pos_type, -- 직위
+       a.salary_class salary_class, -- 호봉
+       a.duty_type duty_type, -- 직책코드
+       a.occ_type occ_type,
+
+
+-- 직종코드(건설)
+       a.title_type title_type, -- 직급
+       a.job_full_nm job_full_nm,
+
+
+-- 직무전체명 (직군 직종 직무)
+       a.job_class_order job_class_order,
+
+
+-- 직위정렬키
+       a.next_class_ymd next_class_ymd,
+
+
+-- 차기승봉일
+       a.work_area work_area, -- 사업장
+       a.org_rank org_rank, -- 조직Rank
+       a.retire_ymd retire_ymd,
+
+
+-- 퇴직일
+       a.com_org_id ex_com_org_id, -- 서브회사ID
+       a.ex_com_org_nm ex_com_org_nm,
+
+
+-- 서브회사명
+       a.work_org_id work_org_id, -- 현근무지
+       a.post_org_id post_org_id, -- 부임지
+       a.real_order_ymd real_order_ymd, -- 실부임일
+       a.work_area2 work_area2, -- 사업장
+       a.job_id job_id, -- 직무ID
+       a.native_place native_place, -- 출신지역
+       a.org_seq org_seq,
+
+
+-- 조직순서
+       a.order_reason_type order_reason_type, -- 발령사유
+       a.auth_group_type auth_group_type, -- 직군그룹(권한)
+       a.org_type org_type,
+
+
+-- 조직유형 -- 실제근무지
+       a.real_work_org_id real_work_org_id, -- 지역(신청, 결제)
+       a.area_cd area_cd, -- 근무지역
+       a.org_short_nm org_short_nm, -- 조직약칭
+       a.work_base_ymd work_base_ymd -- 근속기준일
+       ,
+       sys_sf_between_ymd (sys_sf_org_ymd (a.person_id, a.org_id, TO_CHAR (SYSDATE, 'YYYYMMDD') ), TO_CHAR (SYSDATE, 'YYYYMMDD'), 'YY년MM월', 'Y' ) -- 직위근속일
+       ,
+       a.jikwi_injung_career, -- 인정직위발령일
+       a.first_emp_id, -- 두피스/두드림 사번
+       a.group_enter_ymd, -- 그룹입사일
+       a.first_enter_ymd, -- 최초입사일
+       a.cur_enter_ymd, -- 회사입사일
+       a.mod_date, -- 마지막 update
+       a.people_type, -- 민족
+       a.union_ent_tf,
+       a.union_type,
+       a.union_note,
+       a.order_type, --발령구분
+       a.order_ymd, --발령일자
+       a.prob_end_ymd,
+       A.NATION_TYPE, --국가코드
+       a.work_com_org_id, -- 파견회사코드 (employee 만 존재)
+       NULL ori_com_org_id, --원회사코드 (add_job 만존재)
+       a.tnee_end_ymd, --실습만료일
+       a.rel_city , --시
+       a.ent_type, --입사구분
+       a.req_type, --채용구분
+       a.POSITION_ID ,  
+       a.POSITION_NM ,
+       a.POSITION_GRADE ,
+       a.PERSONAL_GRADE  ,
+       a.F_BENEFIT_GRADE ,
+       a.ORDER_END_YMD   -- 발령종료일자   
+FROM   hrm_employee a
+WHERE  NOT EXISTS (SELECT *
+        FROM   hrm_employee_add_job b
+        WHERE  b.person_id = a.person_id
+        AND    b.com_org_id IN ( '78000000', '59000000', '60000000' , '61000000', '63000000', 'A6000000')
+        AND    b.status_type = '재직'
+        AND    b.emp_type in ('주재원', '파견직') )
+
+-- WHERE com_org_id = '09000000'
+UNION ALL
+SELECT a.person_id person_id, -- 개인ID
+       a.emp_id emp_id, -- 사번
+       a.emp_nm emp_nm, -- 한글이름
+       a.emp_nm_eng emp_nm_eng, -- 영문이름
+       a.emp_nm_cha emp_nm_cha, -- 한자이름
+       a.ctz_no ctz_no,
+
+
+-- 주민등록번호
+       SUBSTR (a.ctz_no, 1, 6) || '-' || SUBSTR (a.ctz_no, 7, 1) || '******' ctz_no_secr, -- 주민등록번호(보안용)
+       a.gender_type gender_type, -- 남여구분
+       a.birth_type birth_type, -- 음양구분
+       a.birth_ymd birth_ymd, -- 생년월일
+       a.com_org_id com_org_id, -- 회사ID
+       a.org_class org_class, -- 회사구분
+       a.com_org_nm com_org_nm, -- 회사명
+       a.org_id org_id,
+
+
+-- 조직ID
+       a.org_nm org_nm, -- 조직명
+       a.org_full_nm org_full_nm, -- 조직전체명
+       a.org_line org_line,
+
+
+-- 조직Line
+       a.main_yn main_yn, -- 주부구분(겸직 체크)
+       a.status_type status_type, -- 재직상태
+       a.com_relat_type com_relat_type,
+
+
+-- 사원과 회사조직 관계유형(회사 겸직 체크)
+       a.relat_type relat_type,
+
+
+-- 사원과 조직 관계유형(조직장 또는 겸직 체크)
+       a.salary_type salary_type, -- 급여유형
+       a.emp_type emp_type, -- 사원유형
+       a.group_type group_type, -- 직군
+       a.pos_type pos_type, -- 직위
+       a.salary_class salary_class, -- 호봉
+       a.duty_type duty_type, -- 직책코드
+       a.occ_type occ_type, -- 직종코드(건설)
+       a.title_type title_type, -- 직급
+       a.job_full_nm job_full_nm, -- 직무전체명 (직군 직종 직무)
+       a.job_class_order job_class_order,
+
+
+-- 직위정렬키
+       a.next_class_ymd next_class_ymd, -- 차기승봉일
+       a.work_area work_area, -- 사업장
+       a.org_rank org_rank, -- 조직Rank
+       a.retire_ymd retire_ymd, -- 퇴직일
+       a.com_org_id ex_com_org_id, -- 서브회사ID
+       a.ex_com_org_nm ex_com_org_nm,
+
+
+-- 서브회사명
+       a.work_org_id work_org_id, -- 현근무지
+       a.post_org_id post_org_id, -- 부임지
+       a.real_order_ymd real_order_ymd, -- 실부임일
+       a.work_area2 work_area2, -- 사업장
+       a.job_id job_id, -- 직무ID
+       a.native_place native_place, -- 출신지역
+       a.org_seq org_seq,
+
+
+-- 조직순서
+       a.order_reason_type order_reason_type, -- 발령사유
+       a.auth_group_type auth_group_type, -- 직군그룹(권한)
+       a.org_type org_type,
+
+
+-- 조직유형 -- 실제근무지
+       a.real_work_org_id real_work_org_id, -- 지역(신청, 결제)
+       a.area_cd area_cd, -- 근무지역
+       a.org_short_nm org_short_nm, -- 조직약칭
+       a.work_base_ymd work_base_ymd,
+
+
+-- 근속기준일
+       sys_sf_between_ymd (sys_sf_org_ymd (a.person_id, a.org_id, TO_CHAR (SYSDATE, 'YYYYMMDD') ), TO_CHAR (SYSDATE, 'YYYYMMDD'), 'YY년MM월', 'Y' ) -- 직위근속일
+       ,
+       a.jikwi_injung_career, -- 인정직위발령일
+       a.first_emp_id, -- 두피스/두드림 사번
+       a.group_enter_ymd,
+
+
+-- 그룹입사일
+       a.first_enter_ymd, -- 최초입사일
+       a.cur_enter_ymd, -- 회사입사일
+       a.mod_date, -- 마지막 update
+       a.people_type, -- 민족
+       '',
+       '',
+       '',
+       a.order_type, --발령구분
+       a.order_ymd, --발령일자
+       a.prob_end_ymd,
+       A.NATION_TYPE, --국가코드
+       NULL work_com_org_id, -- 파견회사코드 (employee 만 존재)
+       a.ex_com_org_id ori_com_org_id, --원회사코드 (add_job 만존재)
+       a.tnee_end_ymd , --실습만료일
+       '' , --시
+       '' ent_type, -- 입사구분
+       '' req_type, -- 채용구분
+       a.POSITION_ID ,  
+       a.POSITION_NM ,
+       a.POSITION_GRADE ,
+       a.PERSONAL_GRADE  ,
+       a.F_BENEFIT_GRADE ,
+       '' ORDER_END_YMD   -- 발령종료일자   
+FROM   hrm_employee_add_job a
+WHERE  a.com_org_id IN ('78000000', '59000000', '60000000' , '61000000', '63000000', 'A6000000')
+AND    a.status_type = '재직'
+AND    a.emp_type <> '겸직';
+ 
